@@ -16,8 +16,10 @@ import es.upm.eui.tfc.model.Cita;
 @Table(name="citas")
 @NamedQuery(name="Cita.findAll", query="SELECT c FROM CitaImpl c")
 public class CitaImpl extends EntradaAgendaImpl implements Cita {
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = -8555206378512437287L;
+	
+	
 	//bi-directional many-to-one association to ClienteImpl
 	@Column(name="id_cliente")
 	private int idCliente;
