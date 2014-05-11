@@ -4,10 +4,12 @@ import java.util.List;
 import java.io.Serializable;
 
 import es.upm.eui.tfc.model.Cita;
+import es.upm.eui.tfc.model.Evento;
 import es.upm.eui.tfc.model.EntradaAgenda;
 import es.upm.eui.tfc.model.factory.AgendaFactory.TipoEntradaAgenda;
 import es.upm.eui.tfc.service.error.AgendaServiceException;
 import es.upm.eui.tfc.service.filter.FiltroBusquedaCitas;
+import es.upm.eui.tfc.service.filter.FiltroBusquedaEventos;
 
 public interface AgendaService extends Serializable {
 
@@ -24,6 +26,8 @@ public interface AgendaService extends Serializable {
 	public void borrarEntradaAgenda(int id, TipoEntradaAgenda tipo) throws AgendaServiceException;
 	
 	public List<Cita> buscarCitas(FiltroBusquedaCitas filtro) throws AgendaServiceException;
+	
+	public List<Evento> buscarEventos(FiltroBusquedaEventos filtro) throws AgendaServiceException;
 	
 	public EntradaAgenda recuperarEntradaAgenda(int idEvento) throws AgendaServiceException;	
 	

@@ -2,10 +2,9 @@ package es.upm.eui.tfc.service.filter;
 
 import java.util.Date;
 
-public class FiltroBusquedaCitas {
+public class FiltroBusquedaEventos {
 
 	private Integer idPsicologo;
-	private String nifCliente;
 	private Date fechaInicio;
 	private Date fechaFin;
 	
@@ -15,13 +14,7 @@ public class FiltroBusquedaCitas {
 	}
 	public void setIdPsicologo(Integer idPsicologo) {
 		this.idPsicologo = idPsicologo;
-	}
-	public String getNifCliente() {
-		return nifCliente;
-	}
-	public void setNifCliente(String nifCliente) {
-		this.nifCliente = nifCliente;
-	}
+	}	
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
@@ -37,11 +30,7 @@ public class FiltroBusquedaCitas {
 	
 	public boolean filtrarPorPsicologo() {
 		return this.idPsicologo != null;
-	}
-
-	public boolean filtrarPorCliente() {
-		return this.nifCliente != null && !"".equals(this.nifCliente.trim());
-	}
+	}	
 	
 	public boolean filtrarPorFecha() {
 		return (this.fechaInicio != null || this.fechaFin != null);
