@@ -21,6 +21,8 @@ public interface ClientesService extends Serializable {
 	
 	public void borrarCliente(String nif) throws ClientesServiceException;
 	
+	public void borrarCliente(Cliente cliente) throws ClientesServiceException;
+	
 	public Cliente recuperarCliente(String nif) throws ClientesServiceException;
 	
 	public void actualizarCliente(Cliente cliente) throws ClientesServiceException;

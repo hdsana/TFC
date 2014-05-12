@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import lombok.Data;
 import es.upm.eui.tfc.model.Psicologo;
 
 
@@ -17,6 +18,7 @@ import es.upm.eui.tfc.model.Psicologo;
 @Entity
 @Table(name="psicologos")
 @NamedQuery(name="PsicologoImpl.findAll", query="SELECT p FROM PsicologoImpl p")
+@Data
 public class PsicologoImpl implements Serializable, Psicologo {
 	private static final long serialVersionUID = 1L;
 

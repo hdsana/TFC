@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.upm.eui.tfc.jpa.model.ClienteImpl;
-import es.upm.eui.tfc.model.Cita;
 import es.upm.eui.tfc.model.Cliente;
 import es.upm.eui.tfc.service.ClientesService;
 import es.upm.eui.tfc.service.error.ClientesServiceException;
@@ -53,11 +52,21 @@ public class ClientesServiceImpl implements ClientesService {
 			if (nif != null && !"".equals(nif.trim())) {
 				cliente = new ClienteImpl();
 				cliente.setNif(nif);
-				cliente = em.merge(cliente);
-				em.remove(cliente);
+				this.borrarCliente(cliente);
 			} else {
 				throw new ClientesServiceException("El NIF no puede ser null ni vacio");
 			}
+		} catch (Exception e) {
+			throw new ClientesServiceException(e);
+		}
+		
+	}
+
+	@Transactional
+	public void borrarCliente(Cliente cliente) throws ClientesServiceException {
+		try {
+			cliente = em.merge(cliente);
+			em.remove(cliente);
 		} catch (Exception e) {
 			throw new ClientesServiceException(e);
 		}

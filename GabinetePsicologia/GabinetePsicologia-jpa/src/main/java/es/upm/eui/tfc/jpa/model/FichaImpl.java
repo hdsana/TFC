@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import lombok.Data;
 import es.upm.eui.tfc.model.Ficha;
 
 
@@ -21,6 +22,7 @@ import es.upm.eui.tfc.model.Ficha;
 @Entity
 @Table(name="fichas")
 @NamedQuery(name="FichaImpl.findAll", query="SELECT f FROM FichaImpl f")
+@Data
 public class FichaImpl implements Serializable, Ficha {
 	private static final long serialVersionUID = 1L;
 

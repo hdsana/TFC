@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import lombok.Data;
 import es.upm.eui.tfc.model.Cliente;
 
 
@@ -18,8 +19,10 @@ import es.upm.eui.tfc.model.Cliente;
 @Entity
 @Table(name="clientes")
 @NamedQuery(name="ClienteImpl.findAll", query="SELECT c FROM ClienteImpl c")
+@Data
 public class ClienteImpl implements Serializable, Cliente {
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = -2134622341636977050L;
 
 	@Id
 	private String nif;
@@ -135,6 +138,4 @@ public class ClienteImpl implements Serializable, Cliente {
 	public void setCodigoPsicologo(Integer codigoPsicologo) {
 		this.codigoPsicologo = codigoPsicologo;
 	}
-
-
 }

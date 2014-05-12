@@ -8,6 +8,8 @@ import es.upm.eui.tfc.model.Sesion;
 
 import java.sql.Timestamp;
 
+import lombok.Data;
+
 
 /**
  * The persistent class for the sesiones database table.
@@ -16,6 +18,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name="sesiones")
 @NamedQuery(name="Sesiones.findAll", query="SELECT s FROM SesionImpl s")
+@Data
 public class SesionImpl implements Serializable, Sesion {
 	private static final long serialVersionUID = 1L;
 
