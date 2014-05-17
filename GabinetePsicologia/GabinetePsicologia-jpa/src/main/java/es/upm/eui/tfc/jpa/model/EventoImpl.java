@@ -1,11 +1,13 @@
 package es.upm.eui.tfc.jpa.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -28,7 +30,8 @@ public class EventoImpl extends EntradaAgendaImpl implements Evento {
 	private String descripcion;
 
 	@Column(name="fecha_fin")
-	private Timestamp fechaFin;
+	@Temporal(TemporalType.DATE)
+	private Date fechaFin;
 
 	public EventoImpl() {
 	}
@@ -53,7 +56,7 @@ public class EventoImpl extends EntradaAgendaImpl implements Evento {
 	 * @see es.upm.eui.tfc.jpa.model.Evento#getFechaFin()
 	 */
 	@Override
-	public Timestamp getFechaFin() {
+	public Date getFechaFin() {
 		return this.fechaFin;
 	}
 
@@ -61,7 +64,7 @@ public class EventoImpl extends EntradaAgendaImpl implements Evento {
 	 * @see es.upm.eui.tfc.jpa.model.Evento#setFechaFin(java.sql.Timestamp)
 	 */
 	@Override
-	public void setFechaFin(Timestamp fechaFin) {
+	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 

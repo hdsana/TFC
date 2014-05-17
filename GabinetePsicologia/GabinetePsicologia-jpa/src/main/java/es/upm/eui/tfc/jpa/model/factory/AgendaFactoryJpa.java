@@ -6,7 +6,6 @@ import es.upm.eui.tfc.jpa.model.CitaImpl;
 import es.upm.eui.tfc.jpa.model.EventoImpl;
 import es.upm.eui.tfc.model.EntradaAgenda;
 import es.upm.eui.tfc.model.factory.AgendaFactory;
-import es.upm.eui.tfc.service.AgendaService;
 
 @Service(AgendaFactory.FACTORY_NAME)
 public class AgendaFactoryJpa implements AgendaFactory {

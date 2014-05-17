@@ -45,7 +45,6 @@ public class ClientesServiceImpl implements ClientesService {
 		return cliente;
 	}
 
-	@Transactional
 	public void borrarCliente(String nif) throws ClientesServiceException {
 		ClienteImpl cliente = null;
 		try {
@@ -90,7 +89,7 @@ public class ClientesServiceImpl implements ClientesService {
 	@Transactional
 	public void actualizarCliente(Cliente cliente) throws ClientesServiceException {
 		try {
-			if (cliente != null && !em.contains(cliente)) {
+			if (cliente != null) {
 				cliente = em.merge(cliente);
 			} else {
 				throw new ClientesServiceException("El cliente no puede ser null");
@@ -106,12 +105,13 @@ public class ClientesServiceImpl implements ClientesService {
 	public void asignarPsicologo(Cliente cliente, int codigoPsicologo) throws ClientesServiceException {
 		try {
 			cliente.setCodigoPsicologo(codigoPsicologo);
-			this.actualizarCliente(cliente);
+			cliente = em.merge(cliente);
 		} catch (Exception e) {
 			throw new ClientesServiceException(e);
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Cliente> buscarClientes(FiltroBusquedaClientes filtro) throws ClientesServiceException {
 		List<Cliente> listaClientes = new ArrayList<Cliente>();

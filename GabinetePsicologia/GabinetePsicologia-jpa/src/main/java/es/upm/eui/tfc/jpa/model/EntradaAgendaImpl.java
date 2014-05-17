@@ -1,7 +1,7 @@
 package es.upm.eui.tfc.jpa.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 import es.upm.eui.tfc.model.EntradaAgenda;
@@ -27,7 +29,7 @@ public abstract class EntradaAgendaImpl implements Serializable, EntradaAgenda {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
@@ -35,57 +37,11 @@ public abstract class EntradaAgendaImpl implements Serializable, EntradaAgenda {
 	private int idPsicologo;
 	
 	@Column(name="fecha_inicio")
-	private Timestamp fechaInicio;
+	@Temporal(TemporalType.DATE)
+	private Date fechaInicio;
 	
 	public EntradaAgendaImpl() {
 		super();
 	}
    
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.EntradaAgenda#getIdPsicologo()
-	 */
-	@Override
-	public int getIdPsicologo() {
-		return this.idPsicologo;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.EntradaAgenda#setIdPsicologo(int)
-	 */
-	@Override
-	public void setIdPsicologo(int idPsicologo) {
-		this.idPsicologo = idPsicologo;
-	}
-	
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.EntradaAgenda#setIdEvento(int)
-	 */
-	@Override
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.EntradaAgenda#getIdEvento()
-	 */
-	@Override
-	public int getId() {
-		return this.id;
-	}
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.EntradaAgenda#getFechaInicio()
-	 */
-	@Override
-	public Timestamp getFechaInicio() {
-		return this.fechaInicio;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.EntradaAgenda#setFechaInicio(java.sql.Timestamp)
-	 */
-	@Override
-	public void setFechaInicio(Timestamp fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
 }

@@ -26,7 +26,7 @@ public class CitaImpl extends EntradaAgendaImpl implements Cita {
 	
 	//bi-directional many-to-one association to ClienteImpl
 	@Column(name="id_cliente")
-	private int idCliente;
+	private String idCliente;
 
 	public CitaImpl() {
 	}
@@ -35,7 +35,7 @@ public class CitaImpl extends EntradaAgendaImpl implements Cita {
 	 * @see es.upm.eui.tfc.jpa.model.Cita#getIdCliente()
 	 */
 	@Override
-	public int getIdCliente() {
+	public String getIdCliente() {
 		return this.idCliente;
 	}
 
@@ -43,7 +43,7 @@ public class CitaImpl extends EntradaAgendaImpl implements Cita {
 	 * @see es.upm.eui.tfc.jpa.model.Cita#setIdCliente(int)
 	 */
 	@Override
-	public void setIdCliente(int idCliente) {
+	public void setIdCliente(String idCliente) {
 		this.idCliente = idCliente;
 	}
 

@@ -2,9 +2,13 @@ package es.upm.eui.tfc.jpa.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -20,66 +24,20 @@ import es.upm.eui.tfc.model.Psicologo;
 @NamedQuery(name="PsicologoImpl.findAll", query="SELECT p FROM PsicologoImpl p")
 @Data
 public class PsicologoImpl implements Serializable, Psicologo {
-	private static final long serialVersionUID = 1L;
+
+	
+	private static final long serialVersionUID = 8247776458870401762L;
 
 	@Id
-	private int dni;
+	@Column(name="id_psicologo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int idPsicologo;
 
+	private String nif;
+	
 	private String apellidos;
 
 	private String nombre;
 
-
-
-	public PsicologoImpl() {
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Psicologo#getDni()
-	 */
-	@Override
-	public int getDni() {
-		return this.dni;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Psicologo#setDni(int)
-	 */
-	@Override
-	public void setDni(int dni) {
-		this.dni = dni;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Psicologo#getApellidos()
-	 */
-	@Override
-	public String getApellidos() {
-		return this.apellidos;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Psicologo#setApellidos(java.lang.String)
-	 */
-	@Override
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Psicologo#getNombre()
-	 */
-	@Override
-	public String getNombre() {
-		return this.nombre;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Psicologo#setNombre(java.lang.String)
-	 */
-	@Override
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 
 }

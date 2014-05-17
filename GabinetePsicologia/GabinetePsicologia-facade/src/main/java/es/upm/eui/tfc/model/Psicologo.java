@@ -2,9 +2,9 @@ package es.upm.eui.tfc.model;
 
 public interface Psicologo {
 
-	public abstract int getDni();
+	public abstract String getNif();
 
-	public abstract void setDni(int dni);
+	public abstract void setNif(String nif);
 
 	public abstract String getApellidos();
 
@@ -13,5 +13,9 @@ public interface Psicologo {
 	public abstract String getNombre();
 
 	public abstract void setNombre(String nombre);
+	
+	public abstract int getIdPsicologo();
+	
+	public abstract void setIdPsicologo(int idPsicologo);
 
 }

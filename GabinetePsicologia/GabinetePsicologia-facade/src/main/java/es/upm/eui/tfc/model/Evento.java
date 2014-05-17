@@ -1,6 +1,6 @@
 package es.upm.eui.tfc.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public interface Evento extends EntradaAgenda {
 
@@ -8,8 +8,8 @@ public interface Evento extends EntradaAgenda {
 
 	public abstract void setDescripcion(String descripcion);
 
-	public abstract Timestamp getFechaFin();
+	public abstract Date getFechaFin();
 
-	public abstract void setFechaFin(Timestamp fechaFin);
+	public abstract void setFechaFin(Date fechaFin);
 
 }

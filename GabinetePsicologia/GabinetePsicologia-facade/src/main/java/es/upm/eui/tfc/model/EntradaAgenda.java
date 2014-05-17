@@ -1,6 +1,6 @@
 package es.upm.eui.tfc.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public interface EntradaAgenda {
 
@@ -12,8 +12,8 @@ public interface EntradaAgenda {
 
 	public abstract void setIdPsicologo(int idPsicologo);
 
-	public abstract Timestamp getFechaInicio();
+	public abstract Date getFechaInicio();
 
-	public abstract void setFechaInicio(Timestamp fechaInicio);
+	public abstract void setFechaInicio(Date fechaInicio);
 
 }

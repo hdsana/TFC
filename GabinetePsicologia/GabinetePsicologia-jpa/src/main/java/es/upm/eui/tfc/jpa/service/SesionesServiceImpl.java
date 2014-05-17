@@ -74,15 +74,15 @@ public class SesionesServiceImpl implements SesionesService {
 	
 	@Transactional
 	public void actualizarSesion(Sesion sesion) throws SesionesServiceException {
-	
-		int idSesion=sesion.getIdSesion();
 		try {
-			this.borrarSesion(idSesion);
-			this.registrarSesion(sesion);
+			if (sesion != null) {
+				sesion = em.merge(sesion);
+			} else {
+				throw new SesionesServiceException("La sesion no puede ser null");
+			}
 		} catch (Exception e) {
 			throw new SesionesServiceException(e);
 		}
-		
 	}
 	
 	

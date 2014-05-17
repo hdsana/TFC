@@ -28,11 +28,12 @@ public class PsicologosServiceImpl implements PsicologosService {
 	 * @param psicologo
 	 * @throws PsicologosServiceException si hay algun error en el acceso a base de datos o el parametro de entrada no es valido.
 	 */
+	@Override
 	@Transactional
 	public Psicologo registrarPsicologo(Psicologo psicologo)
 			throws PsicologosServiceException {
 		try {
-			if (psicologo != null && !em.contains(psicologo)) {
+			if (psicologo != null) {
 				em.persist(psicologo);
 			} else {
 				throw new PsicologosServiceException("El psicologo no puede ser null");
@@ -41,18 +42,29 @@ public class PsicologosServiceImpl implements PsicologosService {
 			throw new PsicologosServiceException(e);
 		}
 		return psicologo;
-
+	}
+	
+	@Override
+	@Transactional
+	public void borrarPsicologo(Psicologo psicologo) throws PsicologosServiceException {
+		try {
+			psicologo = em.merge(psicologo);
+			em.remove(psicologo);
+		} catch (Exception e) {
+			throw new PsicologosServiceException(e);
+		}
 	}
 
+	
 	@Override
-	public void borrarPsicologo(Integer dni) throws PsicologosServiceException {
+	@Transactional
+	public void borrarPsicologo(Integer idPsicologo) throws PsicologosServiceException {
 		PsicologoImpl psicologo = null;
 		try {
-			if (dni != null) {
+			if (idPsicologo != null) {
 				psicologo = new PsicologoImpl();
-				psicologo.setDni(dni);
-				psicologo = em.merge(psicologo);
-				em.remove(psicologo);
+				psicologo.setIdPsicologo(idPsicologo);
+				this.borrarPsicologo(psicologo);
 			} else {
 				throw new PsicologosServiceException("El NIF no puede ser null ni vacio");
 			}
@@ -64,11 +76,11 @@ public class PsicologosServiceImpl implements PsicologosService {
 	}
 
 	@Override
-	public Psicologo recuperarPsicologo(Integer dni)
+	public Psicologo recuperarPsicologo(Integer idPsicologo)
 			throws PsicologosServiceException {
 		Psicologo psicologo = null;
-		if (dni != null) {
-			psicologo = em.find(PsicologoImpl.class, dni);
+		if (idPsicologo != null) {
+			psicologo = em.find(PsicologoImpl.class, idPsicologo);
 		} else {
 			throw new PsicologosServiceException("El DNI no puede ser null ni vacio");
 		}
@@ -76,12 +88,15 @@ public class PsicologosServiceImpl implements PsicologosService {
 	}
 
 	@Override
+	@Transactional
 	public void actualizarPsicologo(Psicologo psicologo) 
 			throws PsicologosServiceException {
-		Integer dni=psicologo.getDni();
 		try {
-			this.borrarPsicologo(dni);
-			this.registrarPsicologo(psicologo);
+			if (psicologo != null) {
+				psicologo = em.merge(psicologo);
+			} else {
+				throw new PsicologosServiceException("El psicologo no puede ser null");
+			}
 		} catch (Exception e) {
 			throw new PsicologosServiceException(e);
 		}

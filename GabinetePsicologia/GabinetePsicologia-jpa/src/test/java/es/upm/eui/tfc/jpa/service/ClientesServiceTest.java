@@ -11,9 +11,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import es.upm.eui.tfc.jpa.model.ClienteImpl;
+import es.upm.eui.tfc.jpa.model.PsicologoImpl;
 import es.upm.eui.tfc.model.Cliente;
+import es.upm.eui.tfc.model.Psicologo;
 import es.upm.eui.tfc.service.ClientesService;
+import es.upm.eui.tfc.service.PsicologosService;
 import es.upm.eui.tfc.service.error.ClientesServiceException;
+import es.upm.eui.tfc.service.error.PsicologosServiceException;
 import es.upm.eui.tfc.service.filter.FiltroBusquedaClientes;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,6 +26,9 @@ public class ClientesServiceTest {
 
 	@Resource(name=ClientesService.SERVICE_NAME)
     public ClientesService clientesService;
+	
+	@Resource(name=PsicologosService.SERVICE_NAME)
+    public PsicologosService psicologosService;
 	
 	private static final String DNI_EJEMPLO = "1111111A";
 	
@@ -38,7 +45,7 @@ public class ClientesServiceTest {
 		// Si ya existe el cliente, lo borramos
 		Cliente cliente = this.clientesService.recuperarCliente(DNI_EJEMPLO);
 		if (cliente != null) {
-			this.clientesService.borrarCliente(cliente.getNif());
+			this.clientesService.borrarCliente(cliente);
 		}
 		
 		String nif=DNI_EJEMPLO;
@@ -52,6 +59,18 @@ public class ClientesServiceTest {
 		cliente.setTelefono(telefono);
 		cliente = this.clientesService.registrarCliente(cliente);
 		return cliente;
+	}
+	
+	private Psicologo insertarPsicologoParaTest() throws PsicologosServiceException {
+		String nif="33445566";
+		String nombre="Héctor";
+		String apellidos="Gutierrez García";
+		Psicologo psicologo = new PsicologoImpl();
+		psicologo.setNif (nif);
+		psicologo.setNombre(nombre);
+		psicologo.setApellidos(apellidos);
+		psicologo = this.psicologosService.registrarPsicologo(psicologo);
+		return psicologo;
 	}
 	
 	@Test
@@ -95,7 +114,7 @@ public class ClientesServiceTest {
 	@Test
 	public void testRegistrarClienteDuplicado() throws ClientesServiceException {
 		Cliente cliente = this.insertarClienteParaTest();
-	
+		
 		boolean haHabidoExcepcion = false;
 		try {
 			this.clientesService.registrarCliente(cliente);
@@ -113,9 +132,7 @@ public class ClientesServiceTest {
 	@Test
 	public void testActualizarClienteOK() throws ClientesServiceException {
 		Cliente cliente = this.insertarClienteParaTest();
-		String telefono = cliente.getTelefono();
 		String telefonoNew="99999999";
-		Assert.isTrue(!telefono.equals(telefonoNew));
 		cliente.setTelefono(telefonoNew);
 		this.clientesService.actualizarCliente(cliente);
 		Cliente cliente2 = this.clientesService.recuperarCliente(DNI_EJEMPLO);
@@ -137,6 +154,20 @@ public class ClientesServiceTest {
 		// Borramos el cliente para no dejar basura en BBDD
 		this.clientesService.borrarCliente(cliente2);
 	}
+	
+	@Test
+	public void testRecuperarClienteNoExiste() throws PsicologosServiceException {
+		boolean haHabidoExcepcion = false;
+		try {
+			Cliente cliente = this.clientesService.recuperarCliente("No existe");
+			Assert.isNull(cliente);
+		} catch (Exception e) {
+			haHabidoExcepcion = true;
+		} finally {
+			Assert.isTrue(!haHabidoExcepcion);
+		}
+	}
+
 	
 	@Test
 	public void testBorrarClienteOK() throws ClientesServiceException {
@@ -162,28 +193,29 @@ public class ClientesServiceTest {
 		
 	}
 	
-	/*
 	@Test
-	public void testAsignarPsicologoOK() throws ClientesServiceException {
-	
+	public void testAsignarPsicologoOK() throws ClientesServiceException, PsicologosServiceException {
 		boolean haHabidoExcepcion = false;
-		String nif = "43543454G";
-		int codigoPsicologo = 50104101;
+		Cliente cliente = this.insertarClienteParaTest();
+		Psicologo psicologo = this.insertarPsicologoParaTest();
+		
 		try {
-			Cliente cliente = this.clientesService.recuperarCliente(nif);
 			Assert.notNull(cliente);
-			this.clientesService.asignarPsicologo(cliente,codigoPsicologo);
-			cliente = this.clientesService.recuperarCliente(nif);
-			Assert.isTrue(cliente.getCodigoPsicologo().equals(codigoPsicologo));
+			Assert.notNull(psicologo);
+			this.clientesService.asignarPsicologo(cliente,psicologo.getIdPsicologo());
+			cliente = this.clientesService.recuperarCliente(cliente.getNif());
+			Assert.isTrue(cliente.getCodigoPsicologo().equals(psicologo.getIdPsicologo()));
 		} catch (Exception e) {
 			haHabidoExcepcion = true;
 		}finally {
-			
 			//no devuelve excepcion recuperarCliente aunque el cliente no exista
-			Assert.isTrue(!haHabidoExcepcion);			
+			Assert.isTrue(!haHabidoExcepcion);
 		}
+		
+		// Borramos el cliente para no dejar basura en BBDD
+		this.psicologosService.borrarPsicologo(psicologo);
+		this.clientesService.borrarCliente(cliente);
 	}
-	*/
 	
 	@Test
 	public void testBuscarClientesOK() throws ClientesServiceException {

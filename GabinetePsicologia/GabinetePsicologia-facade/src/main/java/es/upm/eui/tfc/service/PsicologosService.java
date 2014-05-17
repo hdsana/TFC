@@ -13,9 +13,11 @@ public interface PsicologosService extends Serializable {
 	
 	public Psicologo registrarPsicologo(Psicologo psicologo) throws PsicologosServiceException;
 	
-	public void borrarPsicologo(Integer dni) throws PsicologosServiceException;
+	public void borrarPsicologo(Integer idPsicologo) throws PsicologosServiceException;
 	
-	public Psicologo recuperarPsicologo(Integer dni) throws PsicologosServiceException;
+	public void borrarPsicologo(Psicologo psicologo) throws PsicologosServiceException;
+	
+	public Psicologo recuperarPsicologo(Integer idPsicologo) throws PsicologosServiceException;
 	
 	public void actualizarPsicologo(Psicologo psicologo) throws PsicologosServiceException;
 	

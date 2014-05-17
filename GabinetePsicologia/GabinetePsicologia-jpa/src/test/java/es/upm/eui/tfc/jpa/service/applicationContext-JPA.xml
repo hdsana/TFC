@@ -29,7 +29,7 @@
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
  
 	<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
-	 	<property name="databasePlatform" value="org.eclipse.persistence.platform.database.OraclePlatform" />
+	 	<property name="databasePlatform" value="org.eclipse.persistence.platform.database.MySQLPlatform" />
 	 	<property name="showSql" value="true" />
 	</bean>
  
