@@ -27,7 +27,7 @@ public class FichasServiceImpl implements FichasService {
 	@Transactional
 	public Ficha registrarFicha(Ficha ficha) throws FichasServiceException {
 		try {
-			if (ficha != null && !em.contains(ficha)) {
+			if (ficha != null) {
 				em.persist(ficha);
 			} else {
 				throw new FichasServiceException("La ficha no puede ser null o ficha ya existe");
@@ -47,7 +47,7 @@ public class FichasServiceImpl implements FichasService {
 				ficha = em.merge(ficha);
 				em.remove(ficha);
 			} else {
-				throw new FichasServiceException("El id FichaImpl no puede menor que cero");
+				throw new FichasServiceException("El id ficha no puede menor que cero");
 			}
 		} catch (Exception e) {
 			throw new FichasServiceException(e);
@@ -71,4 +71,16 @@ public class FichasServiceImpl implements FichasService {
 		
 	}
 	
+	@Transactional
+	public void actualizarFicha(Ficha ficha) throws FichasServiceException {
+		try {
+			if (ficha != null) {
+				ficha = em.merge(ficha);
+			} else {
+				throw new FichasServiceException("La ficha no puede ser null");
+			}
+		} catch (Exception e) {
+			throw new FichasServiceException(e);
+		}
+	}
 }

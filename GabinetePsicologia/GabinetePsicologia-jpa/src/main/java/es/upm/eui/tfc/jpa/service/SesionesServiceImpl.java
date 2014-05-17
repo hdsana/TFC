@@ -27,7 +27,7 @@ public class SesionesServiceImpl implements SesionesService {
 	@Transactional
 	public Sesion registrarSesion(Sesion sesion) throws SesionesServiceException {
 		try {
-			if (sesion != null && !em.contains(sesion)) {
+			if (sesion != null) {
 				em.persist(sesion);
 			} else {
 				throw new SesionesServiceException("La sesion no puede ser null o sesion ya existe");
