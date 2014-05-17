@@ -6,6 +6,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import es.upm.eui.tfc.model.Cita;
 
@@ -18,7 +20,9 @@ import es.upm.eui.tfc.model.Cita;
 @Table(name="citas")
 @NamedQuery(name="Cita.findAll", query="SELECT c FROM CitaImpl c")
 @EqualsAndHashCode(callSuper=true)
-@ToString
+@ToString(callSuper=true)
+@Getter
+@Setter
 public class CitaImpl extends EntradaAgendaImpl implements Cita {
 
 	private static final long serialVersionUID = -8555206378512437287L;
@@ -28,23 +32,5 @@ public class CitaImpl extends EntradaAgendaImpl implements Cita {
 	@Column(name="id_cliente")
 	private String idCliente;
 
-	public CitaImpl() {
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Cita#getIdCliente()
-	 */
-	@Override
-	public String getIdCliente() {
-		return this.idCliente;
-	}
-
-	/* (non-Javadoc )
-	 * @see es.upm.eui.tfc.jpa.model.Cita#setIdCliente(int)
-	 */
-	@Override
-	public void setIdCliente(String idCliente) {
-		this.idCliente = idCliente;
-	}
 
 }

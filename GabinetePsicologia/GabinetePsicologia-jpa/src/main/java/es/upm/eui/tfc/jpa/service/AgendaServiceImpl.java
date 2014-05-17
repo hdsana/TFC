@@ -1,8 +1,7 @@
 package es.upm.eui.tfc.jpa.service;
 
-import java.util.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.upm.eui.tfc.jpa.model.CitaImpl;
 import es.upm.eui.tfc.jpa.model.EventoImpl;
-import es.upm.eui.tfc.jpa.model.ClienteImpl;
-import es.upm.eui.tfc.jpa.model.EntradaAgendaImpl;
 import es.upm.eui.tfc.model.Cita;
-import es.upm.eui.tfc.model.Cliente;
 import es.upm.eui.tfc.model.EntradaAgenda;
 import es.upm.eui.tfc.model.Evento;
 import es.upm.eui.tfc.model.factory.AgendaFactory;
@@ -47,9 +43,9 @@ public class AgendaServiceImpl implements AgendaService {
 	 * @throws AgendaServiceException si hay algun error en el acceso a base de datos o el parametro de entrada no es valido.
 	 */
 	@Transactional
-	public EntradaAgenda registrarEntradaAgenda(EntradaAgenda entradaAgenda) throws AgendaServiceException {
+	public <T extends EntradaAgenda> T registrarEntradaAgenda(T entradaAgenda) throws AgendaServiceException {
 		try {
-			if (entradaAgenda != null && !em.contains(entradaAgenda)) {
+			if (entradaAgenda != null) {
 				em.persist(entradaAgenda);
 			} else {
 				throw new AgendaServiceException("La entrada Agenda no puede ser null o ya existe");
@@ -73,6 +69,21 @@ public class AgendaServiceImpl implements AgendaService {
 		
 	}
 
+	@Transactional
+	public void borrarEntradaAgenda(EntradaAgenda entradaAgenda) throws AgendaServiceException {		
+		try {
+			if (entradaAgenda != null) {
+				entradaAgenda = em.merge(entradaAgenda);
+				em.remove(entradaAgenda);
+			} else {
+				throw new AgendaServiceException("La Entrada Agenda no puede ser nullO");
+			}
+		} catch (Exception e) {
+			throw new AgendaServiceException(e);
+		}
+		
+	}
+	
 	public List<Cita> buscarCitas(FiltroBusquedaCitas filtro) throws AgendaServiceException {
 		List<Cita> listaCitas = new ArrayList<Cita>();
 		
@@ -204,12 +215,17 @@ public class AgendaServiceImpl implements AgendaService {
 		return listaEventos;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public EntradaAgenda recuperarEntradaAgenda(int idEvento) throws AgendaServiceException {
-		EntradaAgenda entradaAgenda = null;
+	public <T extends EntradaAgenda> T recuperarEntradaAgenda(int idEntradaAgenda, Class<T> clase) throws AgendaServiceException {
+		T entradaAgenda = null;
 		try {	
-			if (idEvento >= 0) {
-				entradaAgenda = em.find(EntradaAgendaImpl.class, idEvento);
+			if (idEntradaAgenda >= 0) {
+				if (clase.isInstance(new EventoImpl())) {
+					entradaAgenda = (T) em.find(EventoImpl.class, idEntradaAgenda);
+				} else {
+					entradaAgenda = (T) em.find(CitaImpl.class, idEntradaAgenda);
+				}
 			} else {
 				throw new AgendaServiceException("El id de evento no puede ser null ni vacio");
 			}

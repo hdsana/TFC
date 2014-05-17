@@ -10,6 +10,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import es.upm.eui.tfc.model.Evento;
 
@@ -22,7 +24,9 @@ import es.upm.eui.tfc.model.Evento;
 @Table(name="eventos")
 @NamedQuery(name="EventoImpl.findAll", query="SELECT e FROM EventoImpl e")
 @EqualsAndHashCode(callSuper=true)
-@ToString
+@ToString(callSuper=true)
+@Getter
+@Setter
 public class EventoImpl extends EntradaAgendaImpl implements Evento {
 
 	private static final long serialVersionUID = -6243911870049962750L;
@@ -30,44 +34,8 @@ public class EventoImpl extends EntradaAgendaImpl implements Evento {
 	private String descripcion;
 
 	@Column(name="fecha_fin")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaFin;
-
-	public EventoImpl() {
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Evento#getDescripcion()
-	 */
-	@Override
-	public String getDescripcion() {
-		return this.descripcion;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Evento#setDescripcion(java.lang.String)
-	 */
-	@Override
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Evento#getFechaFin()
-	 */
-	@Override
-	public Date getFechaFin() {
-		return this.fechaFin;
-	}
-
-	/* (non-Javadoc)
-	 * @see es.upm.eui.tfc.jpa.model.Evento#setFechaFin(java.sql.Timestamp)
-	 */
-	@Override
-	public void setFechaFin(Date fechaFin) {
-		this.fechaFin = fechaFin;
-	}
-
 
 
 }

@@ -21,14 +21,16 @@ public interface AgendaService extends Serializable {
 	 * @param entradaAgenda
 	 * @throws AgendaServiceException
 	 */
-	public EntradaAgenda registrarEntradaAgenda(EntradaAgenda entradaAgenda) throws AgendaServiceException;
+	public <T extends EntradaAgenda> T registrarEntradaAgenda(T entradaAgenda) throws AgendaServiceException;
 	
 	public void borrarEntradaAgenda(int id, TipoEntradaAgenda tipo) throws AgendaServiceException;
+	
+	public void borrarEntradaAgenda(EntradaAgenda entradaAgenda) throws AgendaServiceException;
 	
 	public List<Cita> buscarCitas(FiltroBusquedaCitas filtro) throws AgendaServiceException;
 	
 	public List<Evento> buscarEventos(FiltroBusquedaEventos filtro) throws AgendaServiceException;
 	
-	public EntradaAgenda recuperarEntradaAgenda(int idEvento) throws AgendaServiceException;	
+	public <T extends EntradaAgenda> T recuperarEntradaAgenda(int idEntradaAgenda, Class<T> clase) throws AgendaServiceException;	
 	
 }

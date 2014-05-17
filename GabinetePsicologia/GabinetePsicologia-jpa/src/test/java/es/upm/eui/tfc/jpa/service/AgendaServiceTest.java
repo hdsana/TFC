@@ -1,7 +1,8 @@
 package es.upm.eui.tfc.jpa.service;
 
-import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.annotation.Resource;
 
@@ -11,12 +12,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
-import es.upm.eui.tfc.model.Cita;
+import es.upm.eui.tfc.jpa.model.EventoImpl;
+import es.upm.eui.tfc.jpa.model.PsicologoImpl;
 import es.upm.eui.tfc.model.Evento;
-import es.upm.eui.tfc.model.factory.AgendaFactory;
-import es.upm.eui.tfc.model.factory.AgendaFactory.TipoEntradaAgenda;
+import es.upm.eui.tfc.model.Psicologo;
 import es.upm.eui.tfc.service.AgendaService;
+import es.upm.eui.tfc.service.PsicologosService;
 import es.upm.eui.tfc.service.error.AgendaServiceException;
+import es.upm.eui.tfc.service.error.PsicologosServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"applicationContext-JPA.xml"})
@@ -25,49 +28,72 @@ public class AgendaServiceTest {
 	@Resource(name=AgendaService.SERVICE_NAME)
     public AgendaService agendaService;
 	
-	@Resource(name=AgendaFactory.FACTORY_NAME)
-	public AgendaFactory agendaFactory;
+	@Resource(name=PsicologosService.SERVICE_NAME)
+    public PsicologosService psicologosService;
+	
+	private Psicologo insertarPsicologoParaTest() throws PsicologosServiceException {
+		String nif="33445566";
+		String nombre="Héctor";
+		String apellidos="Gutierrez García";
+		Psicologo psicologo = new PsicologoImpl();
+		psicologo.setNif (nif);
+		psicologo.setNombre(nombre);
+		psicologo.setApellidos(apellidos);
+		psicologo = this.psicologosService.registrarPsicologo(psicologo);
+		return psicologo;
+	}
+
+	private Evento insertarEventoParaTest(Psicologo psicologo) throws AgendaServiceException {
+		Evento evento = new EventoImpl();
+		evento.setDescripcion("Quedar con Raulete Evento");
+		evento.setIdPsicologo(psicologo.getIdPsicologo());
+		
+		Calendar calendar = GregorianCalendar.getInstance();
+		Date inicio = calendar.getTime();
+		calendar.roll(Calendar.DAY_OF_MONTH, 1);
+		Date fin = calendar.getTime();
+		evento.setFechaInicio(inicio);
+		evento.setFechaFin(fin);
+		
+		evento = this.agendaService.registrarEntradaAgenda(evento);
+		return evento;
+	}
+	
+	/*
+	private Cita insertarCitaParaTest(Psicologo psicologo) throws AgendaServiceException {
+		Cita evento = new CitaImpl();
+		evento.setDescripcion("Quedar con Raulete Evento");
+		evento.setIdPsicologo(psicologo.getIdPsicologo());
+		evento = this.agendaService.registrarEntradaAgenda(evento);
+		return evento;
+	}
+	*/
+
 	
 	@Test
-	public void testRegistrarEventoOK() throws AgendaServiceException {
-		String descripcion="Quedar con Raulete Evento";
-		int idPsicologo=50104101;
-		int idEvento=1;
-		TipoEntradaAgenda tipo=TipoEntradaAgenda.EVENTO;
-		Evento evento = (Evento)this.agendaFactory.createEntradaAgenda(tipo);
-		evento.setDescripcion(descripcion);
-		evento.setId(idEvento);
-		evento.setIdPsicologo(idPsicologo);
-		this.agendaService.registrarEntradaAgenda(evento);
-		evento = (Evento)this.agendaService.recuperarEntradaAgenda(idEvento);
+	public void testRegistrarEventoOK() throws AgendaServiceException, PsicologosServiceException {
+		Psicologo psicologo = this.insertarPsicologoParaTest();
+		Evento evento = this.insertarEventoParaTest(psicologo);
+		Evento evento2 = this.agendaService.recuperarEntradaAgenda(evento.getId(), Evento.class);
 		Assert.notNull(evento);
-		Assert.isTrue(evento.getId()==idEvento);
-		Assert.isTrue(evento.getDescripcion()==descripcion);
-		Assert.isTrue(evento.getIdPsicologo()==idPsicologo);
+		Assert.isTrue(evento2.equals(evento));
+		
+		this.agendaService.borrarEntradaAgenda(evento);
+		this.psicologosService.borrarPsicologo(psicologo);
 	}
+	
+	/*
 	
 	@Test
 	public void testRegistrarCitaOK() throws AgendaServiceException {		
-		int idPsicologo=50104101;
-		int idCita=1;
-		Date date = es.upm.eui.tfc.jpa.service.Tiempos.stringToDate("2014-05-15 10:00:00");
-		Timestamp fechaInicio = es.upm.eui.tfc.jpa.service.Tiempos.dateToTimeStamp(date);
-		String idCliente="43543454G";
-		TipoEntradaAgenda tipo=TipoEntradaAgenda.CITA;
-		Cita cita = (Cita)this.agendaFactory.createEntradaAgenda(tipo);
-		cita.setIdPsicologo(idPsicologo);
-		cita.setId(idCita);
-		cita.setIdCliente(idCliente);
-		cita.setFechaInicio(fechaInicio);;
-		this.agendaService.registrarEntradaAgenda(cita);
-		cita = (Cita)this.agendaService.recuperarEntradaAgenda(idCita);
-		Assert.notNull(cita);
-		Assert.isTrue(cita.getId()==idCita);
-		Assert.isTrue(cita.getIdPsicologo()==idPsicologo);
-		Assert.isTrue(cita.getIdCliente()==idCliente);
+		Psicologo psicologo = this.insertarPsicologoParaTest();
+		Cita cita = this.insertarEventoParaTest(psicologo);
+		Evento evento2 = this.agendaService.recuperarEntradaAgenda(evento.getId(), Evento.class);
+		Assert.notNull(evento);
+		Assert.isTrue(evento2.equals(evento));
+		
+		this.agendaService.borrarEntradaAgenda(id, tipo);
 	}
-	/*
-	
 	
 	
 	

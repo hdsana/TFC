@@ -37,7 +37,7 @@ public abstract class EntradaAgendaImpl implements Serializable, EntradaAgenda {
 	private int idPsicologo;
 	
 	@Column(name="fecha_inicio")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInicio;
 	
 	public EntradaAgendaImpl() {
