@@ -1,4 +1,6 @@
 package es.upm.eui.tfc.jpa.service;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -83,6 +85,13 @@ public class SesionesServiceImpl implements SesionesService {
 		} catch (Exception e) {
 			throw new SesionesServiceException(e);
 		}
+	}
+
+	@Override
+	public List<Sesion> recuperarSesiones(int idFicha)
+			throws SesionesServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

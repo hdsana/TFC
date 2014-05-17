@@ -1,6 +1,7 @@
 package es.upm.eui.tfc.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import es.upm.eui.tfc.model.Sesion;
 import es.upm.eui.tfc.service.error.SesionesServiceException;
@@ -22,5 +23,7 @@ public interface SesionesService extends Serializable {
 	public Sesion recuperarSesion(int idSesion) throws SesionesServiceException;
 	
 	public void actualizarSesion(Sesion sesion) throws SesionesServiceException;
+	
+	public List<Sesion> recuperarSesiones(int idFicha) throws SesionesServiceException;
 	
 }
